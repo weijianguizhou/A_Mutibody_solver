@@ -12,21 +12,18 @@ endif()
 add_library(eigen INTERFACE)
 target_include_directories(eigen INTERFACE ${MBS_EIGEN_DIR})
 
-# ---- mbs 库 ----
-add_library(mbs
-    src/matrix.cpp
-    # 继续添加其他源文件
-)
+# ---- mbs 库 (header-only) ----
+add_library(mbs INTERFACE)
 
-target_include_directories(mbs PUBLIC
+target_include_directories(mbs INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(mbs PUBLIC eigen)
+target_link_libraries(mbs INTERFACE eigen)
 
-target_compile_options(mbs PRIVATE
+add_executable(my_solver_app src/main.cpp)
+target_link_libraries(my_solver_app PRIVATE mbs)
+target_compile_options(my_solver_app PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/W4>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra>
 )
-add_executable(my_solver_app src/main.cpp)
-target_link_libraries(my_solver_app PRIVATE mbs)
