@@ -24,6 +24,6 @@ target_link_libraries(mbs INTERFACE eigen)
 add_executable(my_solver_app src/main.cpp)
 target_link_libraries(my_solver_app PRIVATE mbs)
 target_compile_options(my_solver_app PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4;/utf-8>"
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall;-Wextra>
 )
